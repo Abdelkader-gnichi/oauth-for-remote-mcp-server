@@ -1,0 +1,18 @@
+[project]
+name = "oauth-for-remote-mcp-server"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "authlib>=1.6.4",
+    "fastapi>=0.118.0",
+    "fastmcp>=2.12.4",
+    "httpx>=0.28.1",
+    "mcp[cli]>=1.15.0",
+    "psycopg[binary]>=3.2.10",
+    "pydantic>=2.11.9",
+    "python-decouple>=3.8",
+    "python-jose>=3.5.0",
+    "sqlmodel>=0.0.25",
+]
