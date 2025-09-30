@@ -2,32 +2,37 @@ from decouple import config
 
 
 class Settings:
-    # ScaleKit Configuration
-    SCALEKIT_ENVIRONMENT_URL: str = config("SCALEKIT_ENVIRONMENT_URL", "")
-    SCALEKIT_CLIENT_ID: str = config("SCALEKIT_CLIENT_ID", "")
-    SCALEKIT_CLIENT_SECRET: str = config("SCALEKIT_CLIENT_SECRET", "")
-    SCALEKIT_RESOURCE_METADATA_URL: str = config("SCALEKIT_RESOURCE_METADATA_URL", "")
-    SCALEKIT_AUDIENCE_NAME: str = config("SCALEKIT_AUDIENCE_NAME", "")
-    METADATA_JSON_RESPONSE: str = config("METADATA_JSON_RESPONSE", "")
+    def __init__(self):
+        # ScaleKit Configuration
+        self.SCALEKIT_ENVIRONMENT_URL: str = config("SCALEKIT_ENVIRONMENT_URL", default="")
+        self.SCALEKIT_CLIENT_ID: str = config("SCALEKIT_CLIENT_ID", default="")
+        self.SCALEKIT_CLIENT_SECRET: str = config("SCALEKIT_CLIENT_SECRET", default="")
+        self.SCALEKIT_RESOURCE_METADATA_URL: str = config("SCALEKIT_RESOURCE_METADATA_URL", default="")
+        self.SCALEKIT_AUDIENCE_NAME: str = config("SCALEKIT_AUDIENCE_NAME", default="")
+        self.METADATA_JSON_RESPONSE: str = config("METADATA_JSON_RESPONSE", default="")
 
-    # Tavily API Key
-    TAVILY_API_KEY: str = config("TAVILY_API_KEY", "")
+        # Tavily API Key
+        self.TAVILY_API_KEY: str = config("TAVILY_API_KEY", default="")
 
-    # Server Port
-    PORT: int = int(config("PORT", 8000))
+        # Server Port
+        self.PORT: int = config("PORT", cast=int, default=8000)
 
-    def __post_init__(self):
-        if not self.SCALEKIT_CLIENT_ID:
-            raise ValueError("SCALEKIT_CLIENT_ID environment variable not set")
-        if not self.SCALEKIT_CLIENT_SECRET:
-            raise ValueError("SCALEKIT_CLIENT_SECRET environment variable not set")
-        if not self.SCALEKIT_ENVIRONMENT_URL:
-            raise ValueError("SCALEKIT_ENVIRONMENT_URL environment variable not set")
-        if not self.SCALEKIT_RESOURCE_METADATA_URL:
-            raise ValueError("SCALEKIT_RESOURCE_METADATA_URL environment variable not set")
-        if not self.SCALEKIT_AUDIENCE_NAME:
-            raise ValueError("SCALEKIT_AUDIENCE_NAME environment variable not set")
-        if not self.TAVILY_API_KEY:
-            raise ValueError("TAVILY_API_KEY environment variable not set")
+        # Validate required variables
+        self._validate()
+
+    def _validate(self):
+        required = {
+            "SCALEKIT_CLIENT_ID": self.SCALEKIT_CLIENT_ID,
+            "SCALEKIT_CLIENT_SECRET": self.SCALEKIT_CLIENT_SECRET,
+            "SCALEKIT_ENVIRONMENT_URL": self.SCALEKIT_ENVIRONMENT_URL,
+            "SCALEKIT_RESOURCE_METADATA_URL": self.SCALEKIT_RESOURCE_METADATA_URL,
+            "SCALEKIT_AUDIENCE_NAME": self.SCALEKIT_AUDIENCE_NAME,
+            "TAVILY_API_KEY": self.TAVILY_API_KEY,
+        }
+        for key, value in required.items():
+            if not value:
+                raise ValueError(f"{key} environment variable not set")
+
 
 settings = Settings()
+    
