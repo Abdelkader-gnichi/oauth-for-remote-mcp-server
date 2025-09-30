@@ -14,5 +14,17 @@ dependencies = [
     "pydantic>=2.11.9",
     "python-decouple>=3.8",
     "python-jose>=3.5.0",
+    "scalekit-sdk-python>=2.4.6",
     "sqlmodel>=0.0.25",
+    "tavily-python>=0.7.12",
 ]
+
+[project.scripts]
+mcp-server = "src.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
